@@ -5,7 +5,7 @@
   "main": "action-player.js",
   "scripts": {
     "build": "babel ./src/index.js > action-player.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/woowabros/woowahan-action-player#readme",
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-es2015": "^6.24.1",
+    "jest": "^23.6.0"
   }
 }
