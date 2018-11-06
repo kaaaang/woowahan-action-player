@@ -14,8 +14,8 @@ const reducer = (action) => {
     }
 }
 
-export default (actions = {}) => {
-    const View = {
+export default (actions = {}, optionField = {}) => {
+    const View = Object.assign({}, optionField, {
         initialize() {
             this.viewWillMount();
 
@@ -42,7 +42,7 @@ export default (actions = {}) => {
 
             callback(error, response);
         }
-    };
+    });
 
     return View.initialize();
 }
