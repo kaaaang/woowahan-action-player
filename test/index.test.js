@@ -1,6 +1,6 @@
 import ViewConstructor from './utils/view';
 
-describe('initialize action player', () => {
+describe('woowahan action player', () => {
     test('woowahan-action-player should make action dispatcher function from actions object', () => {
         const mockActionData = {
             actionPlayer1: {
@@ -43,6 +43,95 @@ describe('initialize action player', () => {
         });
     });
 
+    // test('should throw error when finish property type is string and view hasn`t method that name is same finish property value', () => {
+    //     const actions = {
+    //         dispatchAction: {
+    //             preventDuplicateCall: true,
+    //             tasks: {
+    //                 name: 'immediate action',
+    //                 params() {
+    //                     return {};
+    //                 }
+    //             },
+    //             finish: 'dispatchActionDone'
+    //         }
+    //     };
+    //     const view = ViewConstructor(actions);
+
+    //     const spyWarn = jest.spyOn(console, 'warn'); 
+
+    //     view.dispatchAction();
+        
+    //         expect(spyWarn).toHaveBeenCalled();
+    // });
+
+    test('should call view method success when finish property type is string and view has method that name is same with finish property value', () => {
+        const actions = {
+            dispatchAction: {
+                preventDuplicateCall: true,
+                tasks: {
+                    name: 'immediate action',
+                    params() {
+                        return {
+                            result: true
+                        };
+                    }
+                },
+                finish: 'dispatchActionDone'
+            }
+        };
+        const view = ViewConstructor(actions, {
+            dispatchActionDone(err, resp) {
+                expect(resp.result).toBeTruthy();
+            }
+        });
+
+        view.dispatchAction();
+    });
+
+    test('should call view method success when finish property type is function', () => {
+        const actions = {
+            dispatchAction: {
+                preventDuplicateCall: true,
+                tasks: {
+                    name: 'immediate action',
+                    params() {
+                        return {
+                            result: true
+                        };
+                    }
+                },
+                finish(error, resp) {
+                    expect(resp.result).toBeTruthy();
+                }
+            }
+        };
+        const view = ViewConstructor(actions);
+
+        view.dispatchAction();
+    });
+
+    test('should dispatch action when tasks property type is object', () => {
+        const actions = {
+            singleTaskAction: {
+                immediate: true,
+                tasks: {
+                    name: 'task 1',
+                    params: {
+                        result: true
+                    }
+                },
+                finish(error, resp) {
+                    expect(resp.result).toBeTruthy();
+                }
+            }
+        };
+
+        expect(typeof actions.singleTaskAction.tasks).toBe('object');
+
+        const view = ViewConstructor(actions);
+    })
+
     test('should dispatch multiple action when tasks propety type is array', () => {
         const TASK_1 = 'task 1';
         const TASK_2 = 'task 2';
@@ -74,6 +163,8 @@ describe('initialize action player', () => {
                 }
             }
         }
+
+        expect(Array.isArray(actions.multipleTasksAction.tasks)).toBeTruthy();
 
         const view = ViewConstructor(actions);
         
@@ -138,9 +229,9 @@ describe('initialize action player', () => {
                     }
                 }],
                 finish(results) {
-                    expect(results[ACTION_1].resp.no).toBe(1);
-                    expect(results[ACTION_2].resp.no).toBe(2);
-                    expect(results[ACTION_3].resp.no).toBe(3);
+                    expect(results[TASK_1].resp.no).toBe(1);
+                    expect(results[TASK_2].resp.no).toBe(2);
+                    expect(results[TASK_3].resp.no).toBe(3);
                 }
             }
         };
