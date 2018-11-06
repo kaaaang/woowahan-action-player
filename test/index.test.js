@@ -1,9 +1,40 @@
-import ViewConstructor from './view';
-import { hasAllRequiredOptionAction } from './mock-data/input.action';
+import ViewConstructor from './utils/view';
 
 describe('initialize action player', () => {
     test('woowahan-action-player should make action dispatcher function from actions object', () => {
-        const view = ViewConstructor(hasAllRequiredOptionAction);
+        const mockActionData = {
+            actionPlayer1: {
+                tasks: {
+                    name: 'action task 1',
+                    params: {
+                        number: 1
+                    }
+                },
+                finish(err, results) {
+                }
+            },
+            actionPlayer2: {
+                tasks: {
+                    name: 'action task 2',
+                    params: {
+                        number: 2
+                    }
+                },
+                finish(err, results) {
+                }
+            },
+            actionPlayer3: {
+                tasks: {
+                    name: 'action task 3',
+                    params: {
+                        number: 3
+                    }
+                },
+                finish(err, results) {
+                }
+            },
+        }
+        const view = ViewConstructor(mockActionData);
 
         const actions = Object.keys(view.actions);
 
@@ -74,15 +105,15 @@ describe('initialize action player', () => {
     });
 
     test('should tasks dispatch sequence when sequence option true', () => {
-        const ACTION_1 = 'sequence action 1';
-        const ACTION_2 = 'sequence action 2';
-        const ACTION_3 = 'sequence action 3';
+        const TASK_1 = 'sequence action 1';
+        const TASK_2 = 'sequence action 2';
+        const TASK_3 = 'sequence action 3';
 
         const actions = {
             sequenceActions: {
                 sequence: true,
                 tasks: [{
-                    name: ACTION_1,
+                    name: TASK_1,
                     params(data = {}) {
                         const newData = {};
                         newData.no = !!data.no ? data.no + 1 : 1;
@@ -90,7 +121,7 @@ describe('initialize action player', () => {
                         return newData;
                     }
                 }, {
-                    name: ACTION_2,
+                    name: TASK_2,
                     params(data = {}) {
                         const newData = {};
                         newData.no = !!data.no ? data.no + 1 : 1;
@@ -98,7 +129,7 @@ describe('initialize action player', () => {
                         return newData;
                     }
                 }, {
-                    name: ACTION_3,
+                    name: TASK_3,
                     params(data = {}) {
                         const newData = {};
                         newData.no = !!data.no ? data.no + 1 : 1;

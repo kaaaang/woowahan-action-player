@@ -1,4 +1,4 @@
-import ActionPlayer from '../src';
+import ActionPlayer from '../../src';
 
 const MiddlewareObject = {
 
