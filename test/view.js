@@ -38,7 +38,6 @@ export default (actions = {}) => {
         },
 
         dispatch(action, callback) {
-            // actionExcute 메소드를 통해서 action에 맞는 처리를 해야한다.
             const { error, response } = reducer(action);
 
             callback(error, response);
